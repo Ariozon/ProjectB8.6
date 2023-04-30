@@ -1,0 +1,39 @@
+Installation of Docker, docker-compose and creation of docker-compose.yml file.
+
+•	sudo apt-get remove docker docker-engine docker.io containerd runc
+•	sudo apt-get update && sudo apt-get install \ca-certificates \curl \gnupg
+•	sudo install -m 0755 -d /etc/apt/keyrings
+•	curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+•	sudo chmod a+r /etc/apt/keyrings/docker.gpg
+•	echo \
+"deb [arch="$(dpkg --print-architecture)" signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+"$(. /etc/os-release && echo "$VERSION_CODENAME")" stable" | \ sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+•	sudo apt-get update && sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+•	sudo docker run hello-world
+-------------------------------------------------------------------------------------------------------------
+Update compose:
+•	sudo apt-get update && sudo apt-get install docker-compose-plugin
+--------------------------------------------------------------------------------------------------------------
+Automated testing environments
+•	docker compose up -d
+•	./run_tests
+•	docker compose down
+--------------------------------------------
+If you started Compose with docker compose up -d, stop your services once you’ve finished with them:
+•	docker compose stop
+Switch to another terminal window, and type docker image ls to list local images. bListing images at this point should return redis and web.
+•	docker image ls
+see what is currently running:
+•	docker compose ps
+You can bring everything down, removing the containers entirely, with the down command. Pass --volumes to also remove the data volume used by the Redis container:
+•	docker compose down --volumes
+-----------------------------------------------------------------------------------------------------------------------------
+curl ifconfig.me
+---------------------------------------------------------------------------------------
+command that shows the container ID, name, IP address, and port mappings for all running containers:
+
+docker ps --format "table {{.ID}}\t{{.Names}}\t{{.Ports}}" | awk '{print $0; system("docker inspect --format \"{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}\" " $1)}'
+
+This command uses awk to print the output of the docker ps command and then runs the docker inspect command for each container to extract its IP address.
+---------------------------------------------------------------------------------------------------------------------------------------
+
